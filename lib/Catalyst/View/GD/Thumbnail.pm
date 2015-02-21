@@ -90,15 +90,15 @@ Catalyst::View::GD::Thumbnail - Catalyst view to resize images for thumbnails.
 	sub thumbnail :Local :Args(1) {
  		my ($self, $c, $image_file_path) = @_;
 
-		$c->stash->{x}     = 100;    
+		$c->stash->{thumbnail}{x}     = 100;    
 		# Create a 100px wide thumbnail
 
 		#or
 
-		$c->stash->{y}     = 100;    
+		$c->stash->{thumbnail}{y}     = 100;    
 		# Create a 100px tall thumbnail
 
-            	$c->stash->{image} = $image_file_path;        
+            	$c->stash->{thumbnail}{image} = $image_file_path;        
             	$c->forward('View::Thumbnail');
 	}
 
