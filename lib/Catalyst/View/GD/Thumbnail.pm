@@ -152,7 +152,7 @@ automatically be notified of progress on your bug as I make changes.
 
 =head1 AUTHOR
 
-Nick Logan (ugexe) <F<ug@skunkds.com>>
+Nick Logan (ugexe) <F<nlogan@gmail.com>>
 
 =head1 LICENSE AND COPYRIGHT
 
