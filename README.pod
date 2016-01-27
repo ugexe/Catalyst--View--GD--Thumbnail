@@ -8,26 +8,26 @@ Catalyst::View::GD::Thumbnail - Catalyst view to resize images for thumbnails.
 
 =head1 SYNOPSIS
 
-Create a thumbnail view:
+    Create a thumbnail view:
 
-	script/myapp_create view Thumbnail Thumbnail
+    script/myapp_create view Thumbnail Thumbnail
 
-Then in your controller:
+    Then in your controller:
 
-	sub thumbnail :Local :Args(1) {
- 		my ($self, $c, $image_file_path) = @_;
+    sub thumbnail :Local :Args(1) {
+        my ($self, $c, $image_file_path) = @_;
 
-		$c->stash->{thumbnail}{x}     = 100;    
-		# Create a 100px wide thumbnail
+        $c->stash->{thumbnail}{x}     = 100;
+        # Create a 100px wide thumbnail
 
-		#or
+        #or
 
-		$c->stash->{thumbnail}{y}     = 100;    
-		# Create a 100px tall thumbnail
+        $c->stash->{thumbnail}{y}     = 100;
+        # Create a 100px tall thumbnail
 
-            	$c->stash->{thumbnail}{image} = $image_file_path;        
-            	$c->forward('View::Thumbnail');
-	}
+        $c->stash->{thumbnail}{image} = $image_file_path;
+        $c->forward('View::Thumbnail');
+    }
 
 
 =head1 DESCRIPTION

@@ -24,24 +24,24 @@ Catalyst::Helper::View::GD::Thumbnail - Helper for GD Thumbnail Views
 
     Create a thumbnail view:
 
-        script/myapp_create view Thumbnail Thumbnail
+    script/myapp_create view Thumbnail Thumbnail
 
     Then in your controller:
 
-        sub thumbnail :Local :Args(1) {
- 		my ($self, $c, $image_file_path) = @_;
-        
-		$c->stash->{x}     = 100;    
-		# Create a 100px wide thumbnail
-				
-		#or
-					
-		$c->stash->{y}     = 100;    
-		# Create a 100px tall thumbnail
+    sub thumbnail :Local :Args(1) {
+        my ($self, $c, $image_file_path) = @_;
 
-            	$c->stash->{image} = $image_file_path;        
-            	$c->forward('View::Thumbnail');
-        }
+        $c->stash->{thumbnail}{x}     = 100;
+        # Create a 100px wide thumbnail
+
+        #or
+
+        $c->stash->{thumbnail}{y}     = 100;
+        # Create a 100px tall thumbnail
+
+        $c->stash->{thumbnail}{image} = $image_file_path;
+        $c->forward('View::Thumbnail');
+    }
 
 =head1 DESCRIPTION
 
@@ -65,7 +65,7 @@ L<Catalyst::View::GD::Thumbnail>
 
 =head1 AUTHOR
 
-Nick Logan (ugexe) <F<ug@skunkds.com>>
+Nick Logan (ugexe) <F<nlogan@gmail.com>>
 
 =head1 LICENSE AND COPYRIGHT
 

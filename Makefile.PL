@@ -8,23 +8,23 @@ my $bugs = 'https://rt.cpan.org/Public/Dist/Display.html?Name=Catalyst-View-GD-T
 
 WriteMakefile (
     NAME => 'Catalyst::View::GD::Thumbnail',
-    VERSION_FROM => $pm,
+    VERSION_FROM  => $pm,
     ABSTRACT_FROM => $pm,
-    AUTHOR => 'Nick Logan <ug@skunkds.org>',
-    LICENSE => 'perl',
-    PREREQ_PM => {
-	'Image::Info'		=> 0,
-	'Image::Resize'	=> 0,
-	'List::Util'		=> 0,
-	'Catalyst::View'	=> 0,
+    AUTHOR        => 'Nick Logan <ug@skunkds.org>',
+    LICENSE       => 'perl',
+    PREREQ_PM     => {
+    'Image::Info'    => 0,
+    'Image::Resize'  => 0,
+    'List::Util'     => 0,
+    'Catalyst::View' => 0,
     },
     BUILD_REQUIRES => {
-	'Test::More'		=> 0,
+    'Test::More' => 0,
     },
     META_MERGE => {
         resources => {
-            repository => $repo,
-            bugtracker => $bugs,
+            repository  => $repo,
+            bugtracker  => $bugs,
         },
     },
 );

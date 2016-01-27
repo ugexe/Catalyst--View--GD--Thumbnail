@@ -7,64 +7,64 @@ use Image::Info qw/image_type/;
 use Image::Resize;
 use List::Util qw/min max/;
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 sub process {
-  my ($self, $c) = @_;
-  my $file = $c->stash->{thumbnail}->{image};
-  my $x = $c->stash->{thumbnail}->{x};
-  my $y = $c->stash->{thumbnail}->{y};
+    my ($self, $c) = @_;
+    my $file = $c->stash->{thumbnail}->{image};
+    my $x = $c->stash->{thumbnail}->{x};
+    my $y = $c->stash->{thumbnail}->{y};
+
+    if(!defined $c->stash->{thumbnail}->{quality}) {
+        $c->stash->{thumbnail}->{quality} = "";
+    }
+
+    my $quality = $c->stash->{thumbnail}->{quality};
+    my $mime = image_type($file)->{file_type};
+    my $resize = Image::Resize->new($file);
+    my $source_aspect = $resize->width / $resize->height;
+    $x ||= $y * $source_aspect;
+    $y ||= $x / $source_aspect;
+    my $thumbnail = $resize->resize($x,$y);
   
-  if(!defined $c->stash->{thumbnail}->{quality}) {
-		$c->stash->{thumbnail}->{quality} = "";
-  }
-  
-  my $quality = $c->stash->{thumbnail}->{quality};
-  my $mime = image_type($file)->{file_type};  
-  my $resize = Image::Resize->new($file);
-  my $source_aspect = $resize->width / $resize->height;
-  $x  ||= $y * $source_aspect;
-  $y  ||= $x / $source_aspect;
-  my $thumbnail = $resize->resize($x,$y);
-  
-	if($mime eq 'BMP') {
-		$thumbnail = $thumbnail->bmp;
-	}
-	elsif($mime eq 'GIF') {
-		$thumbnail = $thumbnail->gif;
-	}
-	elsif($mime eq 'JPEG') {
-		if($quality eq "" || $quality > 100 || $quality < 0) {
-			$thumbnail = $thumbnail->jpeg;
-		}
-		else {
-			$thumbnail = $thumbnail->jpeg($quality);
-		}
-	}
-	elsif($mime eq 'PNG') {
-		$thumbnail = $thumbnail->png;
-		if($quality eq "" || $quality > 9 || $quality < 0) {
-			$thumbnail = $thumbnail->png;
-		}
-		else {
-			$thumbnail = $thumbnail->png($quality);
-		}
-	} 
-	elsif($mime eq 'X-XBITMAP') {
-		$thumbnail = $thumbnail->xbm;
-	}  
-	elsif($mime eq 'X-XPIXMAP') {
-		$thumbnail = $thumbnail->xpm;
-	}  
-	else {
-		my $error = qq/Unsupported image format/;
-		$c->log->error($error);
-		$c->error($error);
-		return 0;  
-	}
-	  
-  $c->response->content_type($mime);
-  $c->response->body($thumbnail);    
+    if($mime eq 'BMP') {
+        $thumbnail = $thumbnail->bmp;
+    }
+    elsif($mime eq 'GIF') {
+        $thumbnail = $thumbnail->gif;
+    }
+    elsif($mime eq 'JPEG') {
+        if($quality eq "" || $quality > 100 || $quality < 0) {
+            $thumbnail = $thumbnail->jpeg;
+        }
+        else {
+            $thumbnail = $thumbnail->jpeg($quality);
+        }
+    }
+    elsif($mime eq 'PNG') {
+        $thumbnail = $thumbnail->png;
+        if($quality eq "" || $quality > 9 || $quality < 0) {
+            $thumbnail = $thumbnail->png;
+        }
+        else {
+            $thumbnail = $thumbnail->png($quality);
+        }
+    }
+    elsif($mime eq 'X-XBITMAP') {
+        $thumbnail = $thumbnail->xbm;
+    }
+    elsif($mime eq 'X-XPIXMAP') {
+        $thumbnail = $thumbnail->xpm;
+    }
+    else {
+        my $error = qq/Unsupported image format/;
+        $c->log->error($error);
+        $c->error($error);
+        return 0;
+    }
+
+    $c->response->content_type($mime);
+    $c->response->body($thumbnail);
 }
 
 1;
@@ -75,7 +75,7 @@ __END__
 
 =head1 NAME
 
-Catalyst::View::GD::Thumbnail - Catalyst view to resize images for thumbnails.
+Catalyst::View::GD::Thumbnail - Catalyst view to resize images for thumbnails
 
 =cut
 
@@ -83,24 +83,24 @@ Catalyst::View::GD::Thumbnail - Catalyst view to resize images for thumbnails.
 
     Create a thumbnail view:
 
-	script/myapp_create view Thumbnail Thumbnail
+    script/myapp_create view Thumbnail Thumbnail
 
     Then in your controller:
 
-	sub thumbnail :Local :Args(1) {
- 		my ($self, $c, $image_file_path) = @_;
+    sub thumbnail :Local :Args(1) {
+        my ($self, $c, $image_file_path) = @_;
 
-		$c->stash->{thumbnail}{x}     = 100;    
-		# Create a 100px wide thumbnail
+        $c->stash->{thumbnail}{x}     = 100;
+        # Create a 100px wide thumbnail
 
-		#or
+        #or
 
-		$c->stash->{thumbnail}{y}     = 100;    
-		# Create a 100px tall thumbnail
+        $c->stash->{thumbnail}{y}     = 100;
+        # Create a 100px tall thumbnail
 
-            	$c->stash->{thumbnail}{image} = $image_file_path;        
-            	$c->forward('View::Thumbnail');
-	}
+        $c->stash->{thumbnail}{image} = $image_file_path;
+        $c->forward('View::Thumbnail');
+    }
 
 
 =head1 DESCRIPTION
